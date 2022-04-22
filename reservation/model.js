@@ -28,7 +28,10 @@ const schema = {
         {
             type: Number,
             required: true
-        }
+        },
+    nameLocal: String,
+    direction: String,
+    nameUser: String
 }
 
 const modelSchema = Schema(schema)

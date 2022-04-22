@@ -58,7 +58,10 @@ exports.create = async(req,res)=>{
         ...item,
         userId,
         soccerFieldId,
-        ownerId
+        ownerId,
+        nameLocal: soccer.name,
+        direction: soccer.direction,
+        nameUser: `${user.name} ${user.surname}`
       }
       let reservation = new Reservation(document)
       let save = await reservation.save()
@@ -80,4 +83,10 @@ exports.getAll = async(req,res)=>{
     const hoursOcupate = joinTime(ocupate)
     const data = finalArray(schema, hoursOcupate)
     res.status(200).json(data)
+}
+
+exports.getUser = async(req,res)=>{
+  const userId = req.id
+  const reservations = await Reservation.find({userId})
+  res.status(200).json({data: reservations})
 }

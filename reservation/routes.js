@@ -4,5 +4,6 @@ const controller = require('./controller')
 
 reservationRouter.post('/create/:id',isAuth,controller.create)
 reservationRouter.post('/', controller.getAll)
+reservationRouter.get('/user',isAuth,controller.getUser)
 
 module.exports = reservationRouter
