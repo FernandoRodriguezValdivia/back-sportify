@@ -97,6 +97,12 @@ exports.getUser = async(req,res)=>{
   res.status(200).json({data: reservations})
 }
 
+exports.getOwner = async(req,res)=>{
+  const ownerId = req.id
+  const reservations = await Reservation.find({ownerId})
+  res.status(200).json({data: reservations})
+}
+
 exports.deleteUser = async(req, res)=>{
   const userId = req.id
   const {id} = req.params
