@@ -70,3 +70,8 @@ exports.getAll =async (req, res)=>{
     res.status(200).json(soccer)
 }
 
+exports.getSearch = async (req, res)=>{
+    const {buscar} = req.query
+    const soccer = await SoccerField.find({name: new RegExp(buscar)})
+    res.status(200).json(soccer)
+}

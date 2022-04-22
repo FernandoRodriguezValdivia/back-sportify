@@ -7,5 +7,6 @@ soccerFieldRouter.patch('/update/:id',isAuth,controller.update)
 soccerFieldRouter.delete('/delete/:id',isAuth,controller.delete)
 soccerFieldRouter.get('/',isAuth, controller.getOwner)
 soccerFieldRouter.get('/all', controller.getAll)
+soccerFieldRouter.get('/search/', controller.getSearch)
 
 module.exports = soccerFieldRouter
