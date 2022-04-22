@@ -45,6 +45,12 @@ const addIdModels = async (model, idModel, idReservation)=>{
     await model.findByIdAndUpdate(idModel, {reservation},{new: true})
 }
 
+const removeIdModels = async (model, idModel, idReservation)=>{
+  const document = await model.findById(idModel)
+  const reservation = document.reservation.filter(x => idReservation !== x.toString())
+  await model.findByIdAndUpdate(idModel, {reservation})
+}
+
 exports.create = async(req,res)=>{
     const userId = req.id
     const soccerFieldId = req.params.id
@@ -89,4 +95,15 @@ exports.getUser = async(req,res)=>{
   const userId = req.id
   const reservations = await Reservation.find({userId})
   res.status(200).json({data: reservations})
+}
+
+exports.deleteUser = async(req, res)=>{
+  const userId = req.id
+  const {id} = req.params
+  const reser = await Reservation.findByIdAndDelete(id)
+  const { ownerId,soccerFieldId }  = reser
+  await removeIdModels(User, userId, id)
+  await removeIdModels(Owner, ownerId, id)
+  await removeIdModels(SoccerField, soccerFieldId, id)
+  res.status(200).json({"message": "delete is sucess"})
 }
