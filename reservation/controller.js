@@ -6,7 +6,7 @@ const SoccerField = require('../soccerField/model')
 const joinTime = (arr) => {
     let timeJoined = []
     for(let el of arr){
-      timeJoined.push(...el.time)
+      timeJoined.push(el.time)
     }
     return timeJoined
   }
@@ -14,15 +14,28 @@ const joinTime = (arr) => {
 const availability = (start, end) => {
     const schedule = []
   
-    for(let i = start; i <= end; i++){
-      const obj = {}
-      obj.hour = i
-      obj.isUsed = false
-      schedule.push(obj)
+    for(let i = start; i < end; i++){
+      schedule.push(i)
     }
-  
     return schedule
+}
+
+const finalArray = (arr1,arr2) => {
+  const final = []
+
+  for(let el of arr1){
+    const obj = {}
+    obj.hour = el
+    if (arr2.includes(el)){
+      obj.state='busy'
+    } else {
+      obj.state = 'availableNoSelected'
+    }
+    final.push(obj)
   }
+
+  return final
+}
 
 const addIdModels = async (model, idModel, idReservation)=>{
     const document = await model.findById(idModel)
@@ -32,17 +45,24 @@ const addIdModels = async (model, idModel, idReservation)=>{
 
 exports.create = async(req,res)=>{
     const userId = req.id
-    const {ownerId, soccerFieldId} = req.body
-    const document = {
-        ...body,
-        userId
+    const soccerFieldId = req.params.id
+    const owner = await Owner.find({soccerField: soccerFieldId})
+    const ownerId = owner[0]._id
+    const {data} = req.body
+    for(let item of data){
+      let document = {
+        ...item,
+        userId,
+        soccerFieldId,
+        ownerId
+      }
+      let reservation = new Reservation(document)
+      let save = await reservation.save()
+      await addIdModels(User, userId, save._id)
+      await addIdModels(Owner, ownerId, save._id)
+      await addIdModels(SoccerField, soccerFieldId, save._id)
     }
-    const reservation = new Reservation(document)
-    const save = await reservation.save()
-    await addIdModels(User, userId, save._id)
-    await addIdModels(Owner, ownerId, save._id)
-    await addIdModels(SoccerField, soccerFieldId, save._id)
-    res.status(200).json({succes: true, save})
+    res.status(200).json({sucess: "reserva exitosa"})
 }
 
 exports.getAll = async(req,res)=>{
@@ -51,5 +71,6 @@ exports.getAll = async(req,res)=>{
     const schema = availability(soccerField.start, soccerField.end)
     const ocupate = await Reservation.find({soccerFieldId,day,month,year})
     const hoursOcupate = joinTime(ocupate)
-
+    const data = finalArray(schema, hoursOcupate)
+    res.status(200).json(data)
 }

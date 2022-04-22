@@ -24,16 +24,11 @@ const schema = {
         type: String,
         required: true
     },
-    time: [
+    time: 
         {
             type: Number,
             required: true
         }
-    ],
-    number: {
-        type: Number,
-        required: true
-    }
 }
 
 const modelSchema = Schema(schema)

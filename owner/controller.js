@@ -22,7 +22,6 @@ exports.signin = async (req, res) => {
 
         if(isVerified){
             const token = jwt.sign({ id: document._id }, "apple")
-            console.log('User validated')
             res.status(200).json({token, name: document.name, type: 'owner'})
         } else{
             res.status(403).json({"message": "Correo o contraseña incorrecta"})

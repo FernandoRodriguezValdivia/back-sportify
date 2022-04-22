@@ -60,6 +60,13 @@ exports.delete = async (req, res) => {
 exports.getOwner = async (req, res)=>{
     const ownerId = req.id
     const soccer = await SoccerField.find({ownerId})
-    console.log(soccer)
+
     res.status(200).json(soccer)
 }
+
+exports.getAll =async (req, res)=>{
+    const soccer = await SoccerField.find({})
+
+    res.status(200).json(soccer)
+}
+
