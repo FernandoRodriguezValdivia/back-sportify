@@ -75,7 +75,7 @@ const html = (canchita, horario) =>{
                           Nombre del local: ${canchita}
                         </li>
                         <li>
-                          Horario: ${horario}
+                          Horario: ${horario}:00 h
                         </li>
                       </ul>
                     </div>
