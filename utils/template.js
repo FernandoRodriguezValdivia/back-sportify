@@ -1,4 +1,4 @@
-const html = (canchita, horario) =>{
+const html = (canchita, horario, fecha) =>{
     return (
         `<html>
 
@@ -76,6 +76,9 @@ const html = (canchita, horario) =>{
                         </li>
                         <li>
                           Horario: ${horario}:00 h
+                        </li>
+                        <li>
+                          Fecha: ${fecha}
                         </li>
                       </ul>
                     </div>

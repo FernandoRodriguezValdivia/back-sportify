@@ -1,7 +1,7 @@
 "use strict";
 const nodemailer = require("nodemailer");
 
-async function main({mail, bhtml, canchita, horario}) {
+async function main({mail, bhtml, canchita, horario, fecha}) {
     let transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 465,
@@ -19,7 +19,7 @@ transactionLog: true
       to: mail, // list of receivers
       subject: "Hello ✔", // Subject line
       text: "Hello world?", // plain text body
-      html: bhtml(canchita, horario), // html body
+      html: bhtml(canchita, horario,fecha), // html body
     });
   }
 

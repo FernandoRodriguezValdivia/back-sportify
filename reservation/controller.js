@@ -65,7 +65,9 @@ exports.create = async(req,res)=>{
       await addIdModels(User, userId, save._id)
       await addIdModels(Owner, ownerId, save._id)
       await addIdModels(SoccerField, soccerFieldId, save._id)
-      main({mail: user.email, bhtml: html, canchita: soccer.name, horario: item.time}).catch(console.error)
+      const date = new Date([item.year,item.month,item.day].join()).toLocaleDateString().split('/')
+      const data = `${date[1]}/${date[0]}/${date[2]}`
+      main({mail: user.email, bhtml: html, canchita: soccer.name, horario: item.time, fecha: data}).catch(console.error)
     }    
     res.status(200).json({sucess: "reserva exitosa"})
 }
