@@ -2,6 +2,8 @@ const Reservation = require('./model')
 const User = require('../user/model')
 const Owner = require('../owner/model')
 const SoccerField = require('../soccerField/model')
+const main =require('../utils/mailer')
+const html = require('../utils/template')
 
 const joinTime = (arr) => {
     let timeJoined = []
@@ -49,6 +51,8 @@ exports.create = async(req,res)=>{
     const owner = await Owner.find({soccerField: soccerFieldId})
     const ownerId = owner[0]._id
     const {data} = req.body
+    const user = await User.findById(userId)
+    const soccer = await SoccerField.findById(soccerFieldId)
     for(let item of data){
       let document = {
         ...item,
@@ -61,7 +65,8 @@ exports.create = async(req,res)=>{
       await addIdModels(User, userId, save._id)
       await addIdModels(Owner, ownerId, save._id)
       await addIdModels(SoccerField, soccerFieldId, save._id)
-    }
+      main({mail: user.email, bhtml: html, canchita: soccer.name, horario})().catch(console.error)
+    }    
     res.status(200).json({sucess: "reserva exitosa"})
 }
 
